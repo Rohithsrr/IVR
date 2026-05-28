@@ -1,0 +1,4 @@
+import { useState } from 'react'; import api from '../api/client';
+export default function LoginPage({onLogin}){const [email,setEmail]=useState('admin@example.com');const [password,setPassword]=useState('secret123');const [name,setName]=useState('Admin');const [err,setErr]=useState('');
+const submit=async()=>{try{await api.post('/auth/register',{email,password,full_name:name}).catch(()=>{});const {data}=await api.post('/auth/login',{email,password});localStorage.setItem('token',data.access_token);onLogin();}catch(e){setErr(e.response?.data?.detail||'Login failed')}};
+return <div className='card'><h2>IVR Login</h2><input value={name} onChange={e=>setName(e.target.value)} placeholder='Full name'/><input value={email} onChange={e=>setEmail(e.target.value)} placeholder='Email'/><input type='password' value={password} onChange={e=>setPassword(e.target.value)} placeholder='Password'/><button onClick={submit}>Sign In / Register</button>{err&&<p>{err}</p>}</div>}

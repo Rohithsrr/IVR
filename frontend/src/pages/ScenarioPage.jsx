@@ -1,0 +1,5 @@
+import { useEffect, useState } from 'react'; import api from '../api/client';
+export default function ScenarioPage(){const [items,setItems]=useState([]);const [name,setName]=useState('New Scenario');const [type,setType]=useState('customer_support');
+const load=()=>api.get('/scenarios').then(r=>setItems(r.data)); useEffect(load,[]);
+const create=async()=>{await api.post('/scenarios',{name,scenario_type:type,description:'custom',is_active:true,steps:[{step_key:'greeting',prompt:'Press 1 or 2',options_json:{'1':'a','2':'b'},fallback_key:'end'},{step_key:'a',prompt:'Path A',options_json:{},final_outcome:'a'},{step_key:'b',prompt:'Path B',options_json:{},final_outcome:'b'},{step_key:'end',prompt:'Bye',options_json:{},final_outcome:'end'}]});load();}
+return <div className='grid'><div className='card'><h3>Create/Edit Scenario</h3><input value={name} onChange={e=>setName(e.target.value)}/><input value={type} onChange={e=>setType(e.target.value)}/><button onClick={create}>Save Scenario</button></div><div className='card'><h3>Scenario List</h3>{items.map(x=><div key={x.id}><b>{x.name}</b> - {x.scenario_type}</div>)}</div></div>}

@@ -1,0 +1,1 @@
+export default function SettingsPage(){return <div className='card'><h3>Admin Settings</h3><p>Configure ACS secrets in backend .env.</p><p>Webhook endpoint: /api/calls/webhook</p><p>Use mock adapter with ACS_USE_MOCK=true for local demos.</p></div>}
