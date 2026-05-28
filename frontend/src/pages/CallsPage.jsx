@@ -1,0 +1,4 @@
+import { useEffect, useState } from 'react'; import api from '../api/client';
+export default function CallsPage(){const [calls,setCalls]=useState([]);const [scenarioId,setScenarioId]=useState(1);const [to,setTo]=useState('+15555550000'); const load=()=>api.get('/calls').then(r=>setCalls(r.data)); useEffect(load,[]);
+const start=async()=>{await api.post('/calls/start',{scenario_id:Number(scenarioId),to_number:to});load();};
+return <div className='grid'><div className='card'><h3>Call Simulator / Initiate Call</h3><input value={scenarioId} onChange={e=>setScenarioId(e.target.value)} placeholder='Scenario ID'/><input value={to} onChange={e=>setTo(e.target.value)}/><button onClick={start}>Start Outbound Call</button></div><div className='card'><h3>Live Call Status / Timeline</h3>{calls.map(c=><div key={c.id}><b>{c.acs_call_connection_id}</b> | {c.status} | step: {c.current_step_key}</div>)}</div></div>}
